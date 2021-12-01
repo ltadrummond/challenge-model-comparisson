@@ -3,7 +3,6 @@ visualizations.py
 
 The script containing visuals over the data.
 """
-
 from functions import *
 
 df = pd.df = pd.read_csv('../data/UCI_Credit_Card.csv')

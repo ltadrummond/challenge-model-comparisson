@@ -81,12 +81,24 @@ def compare_model_metrics(models_dictionary: Dict, X_train: np.array, X_test: np
     return model_comparison_df
 
 
-def train_save_model(X_train, y_train, models_dictionary):
+def grid_search(model, X_train, y_train):
+    parameters = {'estimator__n_estimators': [20, 50, 70, 100],
+                  'estimator__learning_rate': [0.01, 0.1, 0.2, 2],
+                  'estimator__algorithm': ['SAMME', 'SAMME.R']}
+    gs_clf = GridSearchCV(model, parameters, cv=4, n_jobs=-1, scoring='f1_macro')
+    gs_clf = gs_clf.fit(X_train, y_train)
+    print("Best f1_macro = %.3f%%" %((gs_clf.best_score_)*100.0))
+    print("Best parameters are : ")
+    print(gs_clf.best_params_)
+
+
+def train_save_model(X_train: np.array, y_train: np.array, models_dictionary: Dict) -> None:
     for k, v in models_dictionary.items():
         steps = [('scaling', StandardScaler()),
              (k, v)]
         pipeline = Pipeline(steps)
         pipeline.fit(X_train, y_train)
+        print(pipeline.get_params())
         pickle.dump(pipeline, open(f'models/model_{k}', 'wb'))
 
 
@@ -107,7 +119,7 @@ def resample_data(df: pd.DataFrame, n_samples: int) -> pd.DataFrame:
     return df_resampled
 
 
-def plot_importance(model_fit, X_train: pd.DataFrame) -> None:
+def plot_importance(model_fit, X_train: np.array) -> None:
     """Plot count of the target variable.
 
     :param model_fit:
@@ -115,7 +127,7 @@ def plot_importance(model_fit, X_train: pd.DataFrame) -> None:
     :return plt.Axes:
     """
     plt.figure()
-    importance = model_fit.feature_importances_
+    importance = model_fit.steps[1][1].feature_importances_
     plt.bar(range(len(importance)), importance)
     plt.xticks(range(len(importance)), X_train.columns, rotation=70)
     plt.ylabel('importance coefficient')
