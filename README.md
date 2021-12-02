@@ -39,7 +39,7 @@ To be able to do this classification task, the ID column was dropped and the tar
 <img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/correlation_feautures.png">
 
 
-## Before resampling:
+## Before Resampling:
 
 * Distribution of the target feature:
 <img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/target_features_distribution.png">
@@ -49,7 +49,7 @@ To be able to do this classification task, the ID column was dropped and the tar
 <img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/tabel_metrics_before_resampling.png">
 
 
-## After resmpling resampling:
+## After Resampling:
 
 * Distribution of the target feature:
 
