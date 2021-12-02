@@ -39,10 +39,10 @@ This project aims to classify default payments in credit cards. The dataset cont
 | Analyzing the data                | null values, data types, duplicates, unique values by column, description of data statistics, visualize tail and head|
 | Visualizing the data          | correlation plot, target distribution plot|
 |Preporcessing  |  dropping column "ID", renaming target feature, normalizing, train and test split, resampling target feature|
-| Modeling (1st)           | train on not resampled train set different models and compare their metrics on test set  |
-| Modeling (2nd)             | train on resampled train set different models and compare their metrics on test set |
-| Visualizing the models performance       | correlation plot the ROC curve for the different models|
-| Modeling (3nd)             | perform grid search on best performing model (Random Forest) and display it's confusion matrix |
+| Modeling (1st)           | train on not resampled train set, for different models, and compare their metrics on test set  |
+| Modeling (2nd)             | train on resampled train set, for different models, and compare their metrics on test set - models saved as pickle file|
+| Visualizing the models performance       | correlation plot the ROC curve for the different models on test set|
+| Modeling (3nd)             | perform grid search on best performing model (Random Forest) and display it's confusion matrix and metrics on test set |
 
 
 
@@ -72,25 +72,29 @@ This project aims to classify default payments in credit cards. The dataset cont
 <img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/metrics_after_resampling.png">
 
 
+* ROC for the different models:
+<img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/ROC_model_comparison.png">
+
+
 
 ## After grid search:
 ------
 * Confusion Matrix
 <img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/confusion_matrix.png">
 
+*
+<img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/confusion_matrix.png">
 
 # Conclusion
-To achieve a better performing model, normalizing and resampling were two important preprocessing steps. Also being able to compare classifiers and tunning the hyperparameters, considering overfitting, are needed to be taken into consideration.
-The best performed model was Random Forest with an accuracy of......
+To achieve a better performing model, normalizing and resampling were two important preprocessing steps. Also being able to compare classifiers and tunning the hyperparameters, are needed to be taken into consideration.
+The best performed model was Random Forest with an accuracy of 96% on the test set.
 
 Accuracy was the chosen metric in this case, since it was possible to evaluate the model on a balanced dataset.
 
 
 
 # Future prospects
- - ROC curve??
  - plot train and test for overfitting
- - create api
  - create feautures importance plot
  
 
