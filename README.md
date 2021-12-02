@@ -77,13 +77,13 @@ This project aims to classify default payments in credit cards. The dataset cont
 
 
 
-## After grid search:
-------
-* Confusion Matrix
+## Random Forest After grid search:
+
+* Confusion Matrix Random Forest
 <img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/confusion_matrix.png">
 
-*
-<img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/confusion_matrix.png">
+* Accuracy Random Forest
+<img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/model_after_grid.png">
 
 # Conclusion
 To achieve a better performing model, normalizing and resampling were two important preprocessing steps. Also being able to compare classifiers and tunning the hyperparameters, are needed to be taken into consideration.
@@ -92,11 +92,6 @@ The best performed model was Random Forest with an accuracy of 96% on the test s
 Accuracy was the chosen metric in this case, since it was possible to evaluate the model on a balanced dataset.
 
 
-
-# Future prospects
- - plot train and test for overfitting
- - create feautures importance plot
- 
 
 # Time-line
 30-11-2021 to 02-12-2021
