@@ -7,6 +7,7 @@ import pickle
 from typing import Dict
 import numpy as np
 import pandas as pd
+from matplotlib import pyplot
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import accuracy_score, precision_score, recall_score,\
     f1_score, roc_curve, auc, confusion_matrix, average_precision_score
@@ -197,4 +198,41 @@ def count_plot(x: str, df: pd.DataFrame, before_or_afte_resample: str) -> None:
     plt.show()
 
 
+def evaluate_and_plot_train_test(model, X_train, X_test, y_train, y_test):
+    """This function aims to detect over-fitting"""
+    train_scores, test_scores = [], []
+    values = [i for i in range(1, 51)]
+    # evaluate a decision tree for each depth
+    for i in values:
+        model = model
+        model.fit(X_train, y_train)
+        train_pred = model.predict(X_train)
+        train_acc = accuracy_score(y_train, train_pred)
+        train_scores.append(train_acc)
+        test_pred = model.predict(X_test)
+        test_acc = accuracy_score(y_test, test_pred)
+        test_scores.append(test_acc)
+        # summarize progress
+        print('>%d, train: %.3f, test: %.3f' % (i, train_acc, test_acc))
+    plt.fig()
+    pyplot.plot(values, train_scores, '-o', label='Train')
+    pyplot.plot(values, test_scores, '-o', label='Test')
+    pyplot.legend()
+    pyplot.show()
 
+
+def plot_roc_curve_auc(model, X_test, y_test):
+    roc = model.predict_proba(X_test)[:, 1]
+    plt.subplots(figsize=(8, 6))
+    fpr, tpr, thresholds = roc_curve(y_test, roc)
+    plt.plot(fpr, tpr)
+    x = np.linspace(0, 1, num=50)
+    plt.fig()
+    plt.plot(x, x, color='lightgrey', linestyle='--', marker='', lw=2, label='random guess')
+    plt.legend(fontsize=14)
+    plt.xlabel('False positive rate', fontsize=18)
+    plt.ylabel('True positive rate', fontsize=18)
+    plt.title(f'ROC Curve/ AUC = {auc(fpr, tpr)}')
+    plt.xlim(-0.1, 1.1)
+    plt.ylim(-0.1, 1.1)
+    plt.show()
