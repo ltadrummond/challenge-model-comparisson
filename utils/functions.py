@@ -81,25 +81,61 @@ def compare_model_metrics(models_dictionary: Dict, X_train: np.array, X_test: np
     return model_comparison_df
 
 
-def grid_search(model, X_train, y_train):
-    parameters = {'estimator__n_estimators': [20, 50, 70, 100],
-                  'estimator__learning_rate': [0.01, 0.1, 0.2, 2],
-                  'estimator__algorithm': ['SAMME', 'SAMME.R']}
-    gs_clf = GridSearchCV(model, parameters, cv=4, n_jobs=-1, scoring='f1_macro')
+def grid_search(model: Pipeline, X_train: np.array, y_train: np.array) -> None:
+    """Perform grid search and create a data frame with it's values.
+
+    This function performs grid search with Random Forest classifier. Then it stores the best parameters and
+    the accuracy in a dataframe.
+    :param model:
+    :param X_train:
+    :param y_train:
+    :return None:
+    """
+    model_name,  grid_accuracy, best_parameters = ['random_forest'], [], []
+    parameters = {'random_forest__n_estimators': [50, 100, 150, 200],
+                  'random_forest__min_samples_split': [2, 3, 4],
+                  'random_forest__criterion': ['gini', 'entropy'],
+                  'random_forest__max_features': ['auto', 'sqrt', 'log2']}
+    gs_clf = GridSearchCV(model, parameters, cv=4, scoring='accuracy')
     gs_clf = gs_clf.fit(X_train, y_train)
-    print("Best f1_macro = %.3f%%" %((gs_clf.best_score_)*100.0))
-    print("Best parameters are : ")
-    print(gs_clf.best_params_)
+#    print("Best accuracy = %.3f%%" %((gs_clf.best_score_)*100.0))
+#    print("Best parameters are : ")
+    model_name.append('random_forest')
+    best_parameters.append(gs_clf.best_params_)
+    grid_accuracy.append(gs_clf.best_score_)
+    grid_df = pd.DataFrame([model_name, grid_accuracy, best_parameters]).T
+    grid_df.columns = ['model_name', 'grid_accuracy', 'best_parameters']
+    grid_df.to_csv('models/model_performance_after_grid.csv')
+
+
+parameters_model_forest = {'verbose': False,
+                           'scaling__copy': True, 'scaling__with_mean': True, 'scaling__with_std': True,
+                           'random_forest__bootstrap': True, 'random_forest__ccp_alpha': 0.0,
+                           'random_forest__class_weight': None, 'random_forest__criterion': 'gini',
+                           'random_forest__max_depth': None, 'random_forest__max_features': 'auto',
+                           'random_forest__max_leaf_nodes': None,
+                           'random_forest__max_samples': None, 'random_forest__min_impurity_decrease': 0.0,
+                           'random_forest__min_samples_leaf': 1, 'random_forest__min_samples_split': 2,
+                           'random_forest__min_weight_fraction_leaf': 0.0, 'random_forest__n_estimators': 100,
+                           'random_forest__n_jobs': None, 'random_forest__oob_score': False,
+                           'random_forest__random_state': None, 'random_forest__verbose': 0,
+                           'random_forest__warm_start': False}
 
 
 def train_save_model(X_train: np.array, y_train: np.array, models_dictionary: Dict) -> None:
-    for k, v in models_dictionary.items():
-        steps = [('scaling', StandardScaler()),
-             (k, v)]
+    """Train and save the models in a pickle file
+
+    :param X_train:
+    :param y_train
+    :param models_dictionary:
+    :return None:
+    """
+    for key, value in models_dictionary.items():
+        steps = [('scaling', StandardScaler()), (key, value)]
         pipeline = Pipeline(steps)
         pipeline.fit(X_train, y_train)
         print(pipeline.get_params())
-        pickle.dump(pipeline, open(f'models/model_{k}', 'wb'))
+        pickle.dump(pipeline, open(f'models/model_{key}', 'wb'))
 
 
 def resample_data(df: pd.DataFrame, n_samples: int) -> pd.DataFrame:
@@ -142,11 +178,12 @@ def plot_correlation(df: pd.DataFrame) -> None:
     :return None:
     """
     plt.figure()
-    ax = sns.heatmap(df.corr(), linewidths=.5)
+    ax = sns.heatmap(df.corr(), linewidths=.5, cmap="YlGnBu")
+    ax.set_title('Correlation Between Features')
     plt.show()
 
 
-def count_plot(x: str, df: pd.DataFrame) -> None:
+def count_plot(x: str, df: pd.DataFrame, before_or_afte_resample: str) -> None:
     """Plot count of the target variable.
 
     :param x:
@@ -155,8 +192,8 @@ def count_plot(x: str, df: pd.DataFrame) -> None:
     """
     plt.figure()
     s = sns.countplot(x=x, data=df, palette="Paired")
-    s.set_title("Number of people who have a faulty payment or not")
-    s.set(xlabel='faulty payment', ylabel='count')
+    s.set_title(f"Distribution Default Payments {before_or_afte_resample}")
+    s.set(xlabel='Default payment', ylabel='Count')
     plt.show()
 
 

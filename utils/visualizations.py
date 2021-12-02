@@ -10,9 +10,9 @@ df_cleaned = preprocess_df(df)
 
 plot_correlation(df_cleaned)
 
-count_plot("default_payment_next_month", df_cleaned)
+count_plot("default_payment_next_month", df_cleaned, 'Before Resample')
 
 df_resampled = resample_data(df_cleaned, 17000)
 
-count_plot("default_payment_next_month", df_resampled)
+count_plot("default_payment_next_month", df_resampled, 'After Resample')
 

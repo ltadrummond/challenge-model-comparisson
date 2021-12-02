@@ -42,7 +42,7 @@ X_train_resampled, X_test_resampled, y_train_resampled, y_test_resampled = train
                                                                                             shuffle=True,
                                                                                             stratify=y_resampled)
 
-pickle.dump(X_train_resampled, open('utils/X_train_resampled', 'wb'))
+#pickle.dump(X_train_resampled, open('utils/X_train_resampled', 'wb'))
 
 #train_save_model(X_train_resampled, y_train_resampled, model_dict)
 #compare_model_metrics(model_dict, X_train_resampled, X_test_resampled, y_train_resampled,
@@ -64,3 +64,5 @@ parameters_model_forest = {'verbose': False,
                            'random_forest__n_jobs': None, 'random_forest__oob_score': False,
                            'random_forest__random_state': None, 'random_forest__verbose': 0,
                            'random_forest__warm_start': False}
+
+grid_search(model_forest, X_train_resampled, y_train_resampled)
