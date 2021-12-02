@@ -11,13 +11,13 @@ from sklearn.metrics import plot_confusion_matrix
 df = pd.df = pd.read_csv('../data/UCI_Credit_Card.csv')
 df_cleaned = preprocess_df(df)
 
-#plot_correlation(df_cleaned)
+plot_correlation(df_cleaned)
 
-#count_plot("default_payment_next_month", df_cleaned, 'Before Resample')
+count_plot("default_payment_next_month", df_cleaned, 'Before Resample')
 
 df_resampled = resample_data(df_cleaned, 17000)
 
-#count_plot("default_payment_next_month", df_resampled, 'After Resample')
+count_plot("default_payment_next_month", df_resampled, 'After Resample')
 
 X_resampled = np.array(df_resampled.drop(columns='default_payment_next_month'))
 y_resampled = np.array(df_resampled['default_payment_next_month'])

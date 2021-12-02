@@ -1,5 +1,5 @@
 """
-modeling.py
+main.py
 
 The script containing data manipulation and modeling.
 """
@@ -15,7 +15,7 @@ from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 
 
 df = pd.read_csv('data/UCI_Credit_Card.csv')
-#display_logs(df)
+display_logs(df)
 
 df_cleaned = preprocess_df(df)
 
@@ -31,7 +31,7 @@ model_dict = {'dummy': DummyClassifier(),
               'logistic_regression': LogisticRegression(),
               'k_nearest_neighbor': KNeighborsClassifier()}
 
-#compare_model_metrics(model_dict, X_train, X_test, y_train, y_test, 'before_resampling')
+compare_model_metrics(model_dict, X_train, X_test, y_train, y_test, 'before_resampling')
 
 df_resampled = resample_data(df_cleaned, 17000)
 X_resampled = np.array(df_resampled.drop(columns='default_payment_next_month'))
@@ -42,11 +42,11 @@ X_train_resampled, X_test_resampled, y_train_resampled, y_test_resampled = train
                                                                                             shuffle=True,
                                                                                             stratify=y_resampled)
 
-#pickle.dump(X_train_resampled, open('utils/X_train_resampled', 'wb'))
+pickle.dump(X_train_resampled, open('utils/X_train_resampled', 'wb'))
 
-#train_save_model(X_train_resampled, y_train_resampled, model_dict)
-#compare_model_metrics(model_dict, X_train_resampled, X_test_resampled, y_train_resampled,
-#                      y_test_resampled, 'after_resampling')
+train_save_model(X_train_resampled, y_train_resampled, model_dict)
+compare_model_metrics(model_dict, X_train_resampled, X_test_resampled, y_train_resampled,
+                      y_test_resampled, 'after_resampling')
 
 
 model_forest = pickle.load(open('models/model_random_forest', 'rb'))
