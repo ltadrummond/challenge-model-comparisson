@@ -4,8 +4,6 @@
 
 This project aims to classify default payments in credit cards. The dataset contains information on default payments, demographic factors, credit data, history of payment, and bill statements of credit card clients in Taiwan from April 2005 to September 2005. The dataset can also be found on klaggle in the following link: https://www.kaggle.com/uciml/default-of-credit-card-clients-dataset
 
-To be able to do this classification task, the ID column was dropped and the target feature was resampled. Various algorythms were compared in order to achieve a better performing model. Also it was taken into consideration the possibility of overfitting.
-
 
 # Installation
 * Python 3.7
@@ -34,10 +32,24 @@ To be able to do this classification task, the ID column was dropped and the tar
 | modeling.py            | Python file containing code to set up the model. |
 
 
+
+# Method
+| Step                      | Description                                                     |
+|-----------------------------|-----------------------------------------------------------------|
+| Analyzing the data                | null values, data types, duplicates, unique values by column, description of data statistics, visualize tail and head|
+| Visualizing the data          | correlation plot, target distribution plot|
+|Preporcessing  |  dropping column "ID", renaming target feature, normalizing, train and test split, resampling target feature|
+| Modeling (1st)           | train on not resampled train set different models and compare their metrics on test set  |
+| Modeling (2nd)             | train on resampled train set different models and compare their metrics on test set |
+| Visualizing the models performance       | correlation plot the ROC curve for the different models|
+| Modeling (3nd)             | perform grid search on best performing model (Random Forest) and display it's confusion matrix |
+
+
+
 # Visuals
 
 <img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/correlation_feautures.png">
-
+    
 
 ## Before Resampling:
 
@@ -60,12 +72,11 @@ To be able to do this classification task, the ID column was dropped and the tar
 <img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/metrics_after_resampling.png">
 
 
-* Confusion Matrix
-<img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/confusion_matrix.png">
-
 
 ## After grid search:
 ------
+* Confusion Matrix
+<img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/confusion_matrix.png">
 
 
 # Conclusion
