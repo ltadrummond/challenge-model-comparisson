@@ -80,6 +80,7 @@ Accuracy was the chosen metric in this case, since it was possible to evaluate t
  - ROC curve??
  - plot train and test for overfitting
  - create api
+ - create feautures importance plot
  
 
 # Time-line
