@@ -60,16 +60,28 @@ To be able to do this classification task, the ID column was dropped and the tar
 <img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/metrics_after_resampling.png">
 
 
+* Confusion Matrix
+<img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/confusion_matrix.png">
+
+
+## After grid search:
+------
+
 
 # Conclusion
 To achieve a better performing model, normalizing and resampling were two important preprocessing steps. Also being able to compare classifiers and tunning the hyperparameters, considering overfitting, are needed to be taken into consideration.
 The best performed model was Random Forest with an accuracy of......
+
 Accuracy was the chosen metric in this case, since it was possible to evaluate the model on a balanced dataset.
 
 
 
 # Future prospects
-
+ - ROC curve??
+ - plot train and test for overfitting
+ - create api
+ - create feautures importance plot
+ 
 
 # Time-line
 30-11-2021 to 02-12-2021
