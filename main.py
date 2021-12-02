@@ -17,13 +17,13 @@ from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 
 df = pd.read_csv('data/UCI_Credit_Card.csv')
 
-#display_logs(df)
+display_logs(df)
 
 df_cleaned = preprocess_df(df)
 
-#plot_correlation(df_cleaned)
+plot_correlation(df_cleaned)
 
-#count_plot("default_payment_next_month", df_cleaned, 'Before Resample')
+count_plot("default_payment_next_month", df_cleaned, 'Before Resample')
 
 X = np.array(df_cleaned.drop(columns='default_payment_next_month'))
 y = np.array(df_cleaned['default_payment_next_month'])
@@ -37,11 +37,11 @@ model_dict = {'dummy': DummyClassifier(),
               'logistic_regression': LogisticRegression(),
               'k_nearest_neighbor': KNeighborsClassifier()}
 
-#compare_model_metrics(model_dict, X_train, X_test, y_train, y_test, 'before_resampling')
+compare_model_metrics(model_dict, X_train, X_test, y_train, y_test, 'before_resampling')
 
 df_resampled = resample_data(df_cleaned, 17000)
 
-#count_plot("default_payment_next_month", df_resampled, 'After Resample')
+count_plot("default_payment_next_month", df_resampled, 'After Resample')
 
 X_resampled = np.array(df_resampled.drop(columns='default_payment_next_month'))
 y_resampled = np.array(df_resampled['default_payment_next_month'])
@@ -52,19 +52,19 @@ X_train_resampled, X_test_resampled, y_train_resampled, y_test_resampled = train
                                                                                             stratify=y_resampled)
 
 
-#train_save_model(X_train_resampled, y_train_resampled, model_dict)
+train_save_model(X_train_resampled, y_train_resampled, model_dict)
 
-#compare_model_metrics(model_dict, X_train_resampled, X_test_resampled, y_train_resampled,
-#                      y_test_resampled, 'after_resampling')
+compare_model_metrics(model_dict, X_train_resampled, X_test_resampled, y_train_resampled,
+                      y_test_resampled, 'after_resampling')
 
 model_forest = pickle.load(open('models/model_random_forest', 'rb'))
 
-#plot_confusion_matrix(model_forest, X_test_resampled, y_test_resampled)
-#plt.show()
+plot_confusion_matrix(model_forest, X_test_resampled, y_test_resampled)
+plt.show()
 
-#print(model_forest.get_params())
+print(model_forest.get_params())
 
-#grid_search(model_forest, X_train_resampled, y_train_resampled)
+grid_search(model_forest, X_train_resampled, y_train_resampled)
 
 trained_models_list = get_all_trained_models_as_list()
 

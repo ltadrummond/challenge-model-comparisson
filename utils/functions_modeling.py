@@ -106,6 +106,7 @@ def train_save_model(X_train: np.array, y_train: np.array, models_dictionary: Di
 
 
 def get_all_trained_models_as_list():
+    """Get and save all trained models and store them in a list."""
     path = os.getcwd()
     os.chdir('./models')
     all_files = os.listdir()
