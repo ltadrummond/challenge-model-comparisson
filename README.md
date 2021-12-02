@@ -41,7 +41,7 @@ This project aims to classify default payments in credit cards. The dataset cont
 |Preporcessing  |  dropping column "ID", renaming target feature, normalizing, train and test split, resampling target feature|
 | Modeling (1st)           | train on not resampled train set, for different models, and compare their metrics on test set  |
 | Modeling (2nd)             | train on resampled train set, for different models, and compare their metrics on test set - models saved as pickle file|
-| Visualizing the models performance       | correlation plot the ROC curve for the different models on test set|
+| Visualizing the models performance       | plot the ROC curve for the different models on test set|
 | Modeling (3nd)             | perform grid search on best performing model (Random Forest) and display it's confusion matrix and metrics on test set |
 
 
