@@ -7,12 +7,12 @@ This project aims to classify default payments in credit cards. The dataset cont
 To be able to do this classification task, the ID column was dropped and the target feature was resampled. Various algorythms were compared in order to achieve a better performing model. Also it was taken into consideration the possibility of overfitting.
 
 
-# Installation:
+# Installation
 * Python 3.7
 * Pycharm
 
 
-# Libaries:
+# Libaries
 * Pandas
 * Numpy
 * Matplotlib
@@ -22,7 +22,7 @@ To be able to do this classification task, the ID column was dropped and the tar
 
 
 
-# Files:
+# Files
 
 
 | File                        | Description                                                     |
