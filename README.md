@@ -50,8 +50,10 @@ To be able to do this classification task, the ID column was dropped and the tar
 
 
 ## After resmpling resampling:
+
 * Distribution of the target feature:
-<img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/target_features_distribution.png">
+
+<img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/target_features_after_resampling.png">
 
 
 * Comparisson of the performance of different algorythms:
