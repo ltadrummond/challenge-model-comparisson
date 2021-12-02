@@ -64,7 +64,7 @@ To be able to do this classification task, the ID column was dropped and the tar
 <img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/confusion_matrix.png">
 
 
-## After resmpling resampling:
+## After grid search:
 ------
 
 
