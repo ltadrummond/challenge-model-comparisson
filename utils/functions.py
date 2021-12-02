@@ -8,11 +8,12 @@ from typing import Dict
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV, ShuffleSplit, learning_curve
 from sklearn.metrics import accuracy_score, precision_score, recall_score,\
     f1_score, roc_curve, auc, confusion_matrix, average_precision_score
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils import resample
@@ -198,8 +199,17 @@ def count_plot(x: str, df: pd.DataFrame, before_or_afte_resample: str) -> None:
     plt.show()
 
 
-def evaluate_and_plot_train_test(model, X_train, X_test, y_train, y_test):
-    """This function aims to detect over-fitting"""
+def evaluate_and_plot_train_test(model: Pipeline, X_train: np.array, X_test: np.array, y_train: np.array,
+                                 y_test: np.array) -> None:
+    """This function aims to detect over-fitting.
+
+    :param model:
+    :param X_train:
+    :param X_test:
+    :param y_train:
+    :param y_test:
+    :return None:
+    """
     train_scores, test_scores = [], []
     values = [i for i in range(1, 51)]
     # evaluate a decision tree for each depth
@@ -221,7 +231,14 @@ def evaluate_and_plot_train_test(model, X_train, X_test, y_train, y_test):
     pyplot.show()
 
 
-def plot_roc_curve_auc(model, X_test, y_test):
+def plot_roc_curve_auc(model: Pipeline, X_test: np.array, y_test: np.array) -> None:
+    """Calculate AUC and plot ROC.
+
+    :param model:
+    :param X_test:
+    :param y_test:
+    :return None:
+    """
     roc = model.predict_proba(X_test)[:, 1]
     plt.subplots(figsize=(8, 6))
     fpr, tpr, thresholds = roc_curve(y_test, roc)
@@ -236,3 +253,63 @@ def plot_roc_curve_auc(model, X_test, y_test):
     plt.xlim(-0.1, 1.1)
     plt.ylim(-0.1, 1.1)
     plt.show()
+
+
+def plot_learning_curve(estimator, title, X, y, axes=None, ylim=None, cv=None, n_jobs=None,
+                        train_sizes=np.linspace(0.1, 1.0, 5)):
+
+    if axes is None:
+        _, axes = plt.subplots(1, 3, figsize=(20, 5))
+    axes[0].set_title(title)
+    if ylim is not None:
+        axes[0].set_ylim(*ylim)
+    axes[0].set_xlabel("Training examples")
+    axes[0].set_ylabel("Score")
+    train_sizes, train_scores, test_scores, fit_times, _ = learning_curve(estimator, X, y, cv=cv, n_jobs=n_jobs,
+                                                                          train_sizes=train_sizes, return_times=True,)
+    train_scores_mean = np.mean(train_scores, axis=1)
+    train_scores_std = np.std(train_scores, axis=1)
+    test_scores_mean = np.mean(test_scores, axis=1)
+    test_scores_std = np.std(test_scores, axis=1)
+    fit_times_mean = np.mean(fit_times, axis=1)
+    fit_times_std = np.std(fit_times, axis=1)
+    # Plot learning curve
+    axes[0].grid()
+    axes[0].fill_between(train_sizes, train_scores_mean - train_scores_std, train_scores_mean + train_scores_std,
+                         alpha=0.1, color="r")
+    axes[0].fill_between(train_sizes, test_scores_mean - test_scores_std, test_scores_mean + test_scores_std, alpha=0.1,
+                         color="g",)
+    axes[0].plot(train_sizes, train_scores_mean, "o-", color="r", label="Training score")
+    axes[0].plot(train_sizes, test_scores_mean, "o-", color="g", label="Cross-validation score")
+    axes[0].legend(loc="best")
+    axes[1].grid()
+    axes[1].plot(train_sizes, fit_times_mean, "o-")
+    axes[1].fill_between(train_sizes, fit_times_mean - fit_times_std, fit_times_mean + fit_times_std, alpha=0.1)
+    axes[1].set_xlabel("Training examples")
+    axes[1].set_ylabel("fit_times")
+    axes[1].set_title("Scalability of the model")
+    # Plot fit_time vs score
+    axes[2].grid()
+    axes[2].plot(fit_times_mean, test_scores_mean, "o-")
+    axes[2].fill_between(fit_times_mean, test_scores_mean - test_scores_std, test_scores_mean + test_scores_std,
+                         alpha=0.1)
+    axes[2].set_xlabel("fit_times")
+    axes[2].set_ylabel("Score")
+    axes[2].set_title("Performance of the model")
+    plt.show()
+    return plt
+
+
+fig, axes = plt.subplots(3, 2, figsize=(10, 15))
+
+title = "Learning Curves (Naive Bayes)"
+cv = ShuffleSplit(n_splits=100, test_size=0.2, random_state=0)
+estimator = KNeighborsClassifier()
+
+plot_learning_curve(estimator, title, X, y, axes=axes[:, 0], ylim=(0.7, 1.01), cv=cv, n_jobs=4)
+
+title = r"Learning Curves (SVM, RBF kernel, $\gamma=0.001$)"
+cv = ShuffleSplit(n_splits=10, test_size=0.2, random_state=0)
+estimator = Random
+plot_learning_curve(
+    estimator, title, X, y, axes=axes[:, 1], ylim=(0.7, 1.01), cv=cv, n_jobs=4)
