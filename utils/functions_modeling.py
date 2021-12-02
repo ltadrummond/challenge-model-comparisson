@@ -3,7 +3,7 @@ functions_modeling.py
 
 The script containing the functions to do tasks related to modeling.
 """
-
+import os
 import pickle
 from typing import Dict
 import numpy as np
@@ -103,5 +103,18 @@ def train_save_model(X_train: np.array, y_train: np.array, models_dictionary: Di
         pipeline.fit(X_train, y_train)
         print(pipeline.get_params())
         pickle.dump(pipeline, open(f'models/model_{key}', 'wb'))
+
+
+def get_all_trained_models_as_list():
+    path = os.getcwd()
+    os.chdir('./models')
+    all_files = os.listdir()
+    models_list = []
+    for file in os.listdir():
+        if not file.endswith('.csv'):
+            model = pickle.load(open(file, 'rb'))
+            models_list.append(model)
+    print(models_list)
+    return models_list
 
 

@@ -3,10 +3,12 @@ functions_plotting.py
 
 The script containing functions to plot.
 """
-
+from typing import List
+import os
+import pickle
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.metrics import accuracy_score, roc_curve
+from sklearn.metrics import accuracy_score, roc_curve, auc
 from sklearn.neighbors import KNeighborsClassifier
 from matplotlib import pyplot
 from sklearn.model_selection import ShuffleSplit, learning_curve
@@ -90,27 +92,40 @@ def evaluate_and_plot_train_test(model: Pipeline, X_train: np.array, X_test: np.
     pyplot.show()
 
 
-def plot_roc_curve_auc(model: Pipeline, X_test: np.array, y_test: np.array) -> None:
+def get_all_trained_models_as_list():
+    path = os.getcwd()
+    os.chdir('./models')
+    all_files = os.listdir()
+    models_list = []
+    for file in os.listdir():
+        if not file.endswith('.csv') and not file.endswith('cent'):
+            model = pickle.load(open(file, 'rb'))
+            models_list.append(model)
+    print(models_list)
+    return models_list
+
+
+def plot_roc_curve_auc(models_list: List, X_test: np.array, y_test: np.array) -> None:
     """Calculate AUC and plot ROC.
 
-    :param model:
+    :param models_list:
     :param X_test:
     :param y_test:
     :return None:
     """
-    roc = model.predict_proba(X_test)[:, 1]
     plt.subplots(figsize=(8, 6))
-    fpr, tpr, thresholds = roc_curve(y_test, roc)
-    plt.plot(fpr, tpr)
+    for model in models_list:
+        roc = model.predict_proba(X_test)[:, 1]
+        fpr, tpr, thresholds = roc_curve(y_test, roc)
+        plt.plot(fpr, tpr, label=model[1])
     x = np.linspace(0, 1, num=50)
-    plt.fig()
     plt.plot(x, x, color='lightgrey', linestyle='--', marker='', lw=2, label='random guess')
     plt.legend(fontsize=14)
     plt.xlabel('False positive rate', fontsize=18)
     plt.ylabel('True positive rate', fontsize=18)
-    plt.title(f'ROC Curve/ AUC = {auc(fpr, tpr)}')
     plt.xlim(-0.1, 1.1)
     plt.ylim(-0.1, 1.1)
+    plt.title('ROC Model Comparison')
     plt.show()
 
 
