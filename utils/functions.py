@@ -298,18 +298,16 @@ def plot_learning_curve(estimator, title, X, y, axes=None, ylim=None, cv=None, n
     axes[2].set_title("Performance of the model")
     plt.show()
     return plt
+    fig, axes = plt.subplots(3, 2, figsize=(10, 15))
 
+    title = "Learning Curves (Naive Bayes)"
+    cv = ShuffleSplit(n_splits=100, test_size=0.2, random_state=0)
+    estimator = KNeighborsClassifier()
 
-fig, axes = plt.subplots(3, 2, figsize=(10, 15))
+    plot_learning_curve(estimator, title, X, y, axes=axes[:, 0], ylim=(0.7, 1.01), cv=cv, n_jobs=4)
 
-title = "Learning Curves (Naive Bayes)"
-cv = ShuffleSplit(n_splits=100, test_size=0.2, random_state=0)
-estimator = KNeighborsClassifier()
-
-plot_learning_curve(estimator, title, X, y, axes=axes[:, 0], ylim=(0.7, 1.01), cv=cv, n_jobs=4)
-
-title = r"Learning Curves (SVM, RBF kernel, $\gamma=0.001$)"
-cv = ShuffleSplit(n_splits=10, test_size=0.2, random_state=0)
-estimator = Random
-plot_learning_curve(
-    estimator, title, X, y, axes=axes[:, 1], ylim=(0.7, 1.01), cv=cv, n_jobs=4)
+    title = r"Learning Curves (SVM, RBF kernel, $\gamma=0.001$)"
+    cv = ShuffleSplit(n_splits=10, test_size=0.2, random_state=0)
+    estimator = Random
+    plot_learning_curve(
+        estimator, title, X, y, axes=axes[:, 1], ylim=(0.7, 1.01), cv=cv, n_jobs=4)
