@@ -46,7 +46,7 @@ To be able to do this classification task, the ID column was dropped and the tar
 
 
 * Comparisson of the performance of different algorythms:
-
+<img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/tabel_metrics_before_resampling.png">
 
 
 ## After resmpling resampling:
@@ -57,7 +57,7 @@ To be able to do this classification task, the ID column was dropped and the tar
 
 
 * Comparisson of the performance of different algorythms:
-
+<img src="https://github.com/ltadrummond/challenge-model-comparisson/blob/main/visuals/metrics_after_resampling.png">
 
 
 
